@@ -1,5 +1,5 @@
 /*
-* SystemJS v0.21.5 Dev
+* SystemJS v0.21.6 Dev
 */
 (function () {
   'use strict';
@@ -4049,7 +4049,7 @@
     return RegisterLoader.prototype.registerDynamic.call(this, key, deps, executingRequire, execute);
   };
 
-  SystemJSLoader.prototype.version = "0.21.5 Dev";
+  SystemJSLoader.prototype.version = "0.21.6 Dev";
 
   var System = new SystemJSLoader();
 
