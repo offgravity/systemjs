@@ -4,6 +4,14 @@ import { getMapMatch, readMemberExpression, extendMeta, addToError, resolveIfNot
 import { setPkgConfig, createPackage } from './config.js';
 import fetch from './fetch.js';
 
+function tryToDecodeKey (key) {
+  if (typeof key === 'string' && key !== '') {
+    return decodeURIComponent(key);
+  }
+
+  return key;
+}
+
 export function createMetadata () {
   return {
     pluginKey: undefined,
@@ -62,7 +70,9 @@ function getParentMetadata (loader, config, parentKey) {
   return parentMetadata;
 }
 
-export function normalize (key, parentKey) {
+export function normalize (_key, _parentKey) {
+  var key = tryToDecodeKey(_key);
+  var parentKey = tryToDecodeKey(_parentKey);
   var config = this[CONFIG];
 
   var metadata = createMetadata();
@@ -146,7 +156,8 @@ export function normalize (key, parentKey) {
 
 // normalization function used for registry keys
 // just does coreResolve without map
-export function decanonicalize (config, key) {
+export function decanonicalize (config, _key) {
+  var key = tryToDecodeKey(_key);
   var parsed = parsePlugin(config.pluginFirst, key);
 
   // plugin
@@ -158,7 +169,9 @@ export function decanonicalize (config, key) {
   return coreResolve.call(this, config, key, undefined, false, false);
 }
 
-export function normalizeSync (key, parentKey) {
+export function normalizeSync (_key, _parentKey) {
+  var key = tryToDecodeKey(_key);
+  var parentKey = tryToDecodeKey(_parentKey);
   var config = this[CONFIG];
 
   // normalizeSync is metadataless, so create metadata
@@ -178,7 +191,9 @@ export function normalizeSync (key, parentKey) {
   return packageResolveSync.call(this, config, key, parentMetadata.pluginArgument || parentKey, metadata, parentMetadata, !!metadata.pluginKey);
 }
 
-export function coreResolve (config, key, parentKey, doMap, packageName) {
+export function coreResolve (config, _key, _parentKey, doMap, packageName) {
+  var key = tryToDecodeKey(_key);
+  var parentKey = tryToDecodeKey(_parentKey);
   var relativeResolved = resolveIfNotPlain(key, parentKey || baseURI);
 
   // standard URL resolution

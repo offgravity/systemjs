@@ -1623,6 +1623,14 @@
 
   var fetch$1 = fetchFunction;
 
+  function tryToDecodeKey (key) {
+    if (typeof key === 'string' && key !== '') {
+      return decodeURIComponent(key);
+    }
+
+    return key;
+  }
+
   function createMetadata () {
     return {
       pluginKey: undefined,
@@ -1660,7 +1668,9 @@
     return parentMetadata;
   }
 
-  function normalize (key, parentKey) {
+  function normalize (_key, _parentKey) {
+    var key = tryToDecodeKey(_key);
+    var parentKey = tryToDecodeKey(_parentKey);
     var config = this[CONFIG];
 
     var metadata = createMetadata();
@@ -1744,7 +1754,8 @@
 
   // normalization function used for registry keys
   // just does coreResolve without map
-  function decanonicalize (config, key) {
+  function decanonicalize (config, _key) {
+    var key = tryToDecodeKey(_key);
     var parsed = parsePlugin(config.pluginFirst, key);
 
     // plugin
@@ -1756,7 +1767,9 @@
     return coreResolve.call(this, config, key, undefined, false, false);
   }
 
-  function normalizeSync (key, parentKey) {
+  function normalizeSync (_key, _parentKey) {
+    var key = tryToDecodeKey(_key);
+    var parentKey = tryToDecodeKey(_parentKey);
     var config = this[CONFIG];
 
     // normalizeSync is metadataless, so create metadata
@@ -1776,7 +1789,9 @@
     return packageResolveSync.call(this, config, key, parentMetadata.pluginArgument || parentKey, metadata, parentMetadata, !!metadata.pluginKey);
   }
 
-  function coreResolve (config, key, parentKey, doMap, packageName) {
+  function coreResolve (config, _key, _parentKey, doMap, packageName) {
+    var key = tryToDecodeKey(_key);
+    var parentKey = tryToDecodeKey(_parentKey);
     var relativeResolved = resolveIfNotPlain(key, parentKey || baseURI);
 
     // standard URL resolution

@@ -223,8 +223,14 @@ suite('SystemJS Standard Tests', function() {
   });
 
   if (typeof process !== 'undefined')
-  test('Importing non-ascii paths in Node', function () {
+  test('Importing non-ascii filename in Node', function () {
     return System.import('tests/副本.js').then(function (m) {
+      ok(m.p === 5);
+    });
+  });
+
+  test('Importing non-ascii paths in Node', function () {
+    return System.import('tests/副本/副本.js').then(function (m) {
       ok(m.p === 5);
     });
   });
