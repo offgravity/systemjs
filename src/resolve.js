@@ -6,7 +6,7 @@ import fetch from './fetch.js';
 
 function tryToDecodeKey (key) {
   if (typeof key === 'string' && key !== '') {
-    return decodeURIComponent(key);
+    return decodeURI(key);
   }
 
   return key;
