@@ -1,5 +1,5 @@
 /*
-* SystemJS v0.21.6 Dev
+* SystemJS v0.21.7 Dev
 */
 (function () {
   'use strict';
@@ -1625,7 +1625,7 @@
 
   function tryToDecodeKey (key) {
     if (typeof key === 'string' && key !== '') {
-      return decodeURIComponent(key);
+      return decodeURI(key);
     }
 
     return key;
@@ -4049,7 +4049,7 @@
     return RegisterLoader.prototype.registerDynamic.call(this, key, deps, executingRequire, execute);
   };
 
-  SystemJSLoader.prototype.version = "0.21.6 Dev";
+  SystemJSLoader.prototype.version = "0.21.7 Dev";
 
   var System = new SystemJSLoader();
 

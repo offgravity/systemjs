@@ -1,6 +1,6 @@
 {
   "name": "offgravityjs",
-  "version": "0.21.6",
+  "version": "0.21.7",
   "description": "Dynamic ES module loader",
   "repository": {
     "type": "git",
