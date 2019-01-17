@@ -1,5 +1,5 @@
 /*
- * SystemJS v0.19.48
+ * SystemJS v0.19.49
  */
 // from https://gist.github.com/Yaffle/1088850
 (function(global) {
@@ -1252,7 +1252,17 @@ function createInstantiate (load, result) {
 var absURLRegEx = /^([^\/]+:\/\/|\/)/;
 
 // Normalization with module names as absolute URLs
-SystemJSLoader.prototype.normalize = function(name, parentName, parentAddress) {
+SystemJSLoader.prototype.normalize = function(_name, _parentName, _parentAddress) {
+  function tryToDecodeKey (key) {
+    if (typeof key === 'string' && key !== '') {
+      return decodeURI(key);
+    }
+
+    return key;
+  }
+  var name = tryToDecodeKey(_name);
+  var parentName = tryToDecodeKey(_parentName);
+  var parentAddress = tryToDecodeKey(_parentAddress);
   // NB does `import 'file.js'` import relative to the parent name or baseURL?
   //    have assumed that it is baseURL-relative here, but spec may well align with URLs to be the latter
   //    safe option for users is to always use "./file.js" for relative
@@ -2193,7 +2203,7 @@ hook('fetch', function(fetch) {
 });System = new SystemJSLoader();
 
 __global.SystemJS = System;
-System.version = '0.19.48 Register Only';
+System.version = '0.19.49 Register Only';
   if (typeof module == 'object' && module.exports && typeof exports == 'object')
     module.exports = System;
 

@@ -1,5 +1,5 @@
 /*
- * SystemJS v0.19.48
+ * SystemJS v0.19.49
  */
 (function() {
 function bootstrap() {// from https://gist.github.com/Yaffle/1088850
@@ -1477,14 +1477,23 @@ function getNodeModule(name, baseURL) {
 
   if (!parentModuleContext) {
     var Module = this._nodeRequire('module');
-    var base = baseURL.substr(isWindows ? 8 : 7);
+    var base = decodeURI(baseURL.substr(isWindows ? 8 : 7));
     parentModuleContext = new Module(base);
     parentModuleContext.paths = Module._nodeModulePaths(base);
   }
   return parentModuleContext.require(name);
 }
 
-function coreResolve(name, parentName) {
+function coreResolve(_name, _parentName) {
+  function tryToDecodeKey (key) {
+    if (typeof key === 'string' && key !== '') {
+      return decodeURI(key);
+    }
+
+      return key;
+  }
+  var name = tryToDecodeKey(_name);
+  var parentName = tryToDecodeKey(_parentName);
   // standard URL resolution
   if (isRel(name))
     return urlResolve(name, parentName);
@@ -2203,7 +2212,16 @@ SystemJSLoader.prototype.config = function(cfg, isEnvConfig) {
   // decanonicalize must JUST handle package defaultExtension: false case when defaultJSExtensions is set
   // to be deprecated!
   hook('decanonicalize', function(decanonicalize) {
-    return function(name, parentName) {
+    return function(_name, _parentName) {
+      function tryToDecodeKey (key) {
+        if (typeof key === 'string' && key !== '') {
+          return decodeURI(key);
+        }
+
+        return key;
+      }
+      var name = tryToDecodeKey(_name);
+      var parentName = tryToDecodeKey(_parentName);
       if (this.builder)
         return decanonicalize.call(this, name, parentName, true);
 
@@ -2233,7 +2251,16 @@ SystemJSLoader.prototype.config = function(cfg, isEnvConfig) {
   });
 
   hook('normalizeSync', function(normalizeSync) {
-    return function(name, parentName, isPlugin) {
+    return function(_name, _parentName, isPlugin) {
+      function tryToDecodeKey (key) {
+        if (typeof key === 'string' && key !== '') {
+          return decodeURI(key);
+        }
+
+        return key;
+      }
+      var name = tryToDecodeKey(_name);
+      var parentName = tryToDecodeKey(_parentName);
       var loader = this;
       isPlugin = isPlugin === true;
 
@@ -4485,7 +4512,7 @@ hook('fetch', function(fetch) {
 });System = new SystemJSLoader();
 
 __global.SystemJS = System;
-System.version = '0.19.48 CSP';
+System.version = '0.19.49 CSP';
   if (typeof module == 'object' && module.exports && typeof exports == 'object')
     module.exports = System;
 
