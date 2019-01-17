@@ -1,5 +1,5 @@
 /*
- * SystemJS v0.19.47
+ * SystemJS v0.19.48
  */
 (function() {
 function bootstrap() {// from https://gist.github.com/Yaffle/1088850
@@ -173,7 +173,10 @@ global.URLPolyfill = URLPolyfill;
   }
   catch(e) {}
 
-  var URL = nativeURL ? __global.URL : __global.URLPolyfill;
+  // var URL = nativeURL ? __global.URL : __global.URLPolyfill;
+  // always use polyfill - due to non-asc
+  var URL = __global.URLPolyfill;
+
 
 /*
 *********************************************************************************************
@@ -4482,7 +4485,7 @@ hook('fetch', function(fetch) {
 });System = new SystemJSLoader();
 
 __global.SystemJS = System;
-System.version = '0.19.47 CSP';
+System.version = '0.19.48 CSP';
   if (typeof module == 'object' && module.exports && typeof exports == 'object')
     module.exports = System;
 
